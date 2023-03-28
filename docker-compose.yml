@@ -1,0 +1,36 @@
+version : "3.7"
+
+services:
+  serveur:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    hostname: serveur
+    volumes:
+      - .:/app
+    ports:
+      - "6666:6666"
+    networks:
+      - sae
+  mysql:
+    image: mysql:5.7
+    container_name : mysql1
+    environment:
+      MYSQL_DATABASE: sae
+      MYSQL_USER: sae
+      MYSQL_PASSWORD: newPassword
+      MYSQL_ROOT_PASSWORD: newPassword
+      UPLOAD_LIMIT: 20M
+    ports:
+      - 3306:3306
+    volumes:
+      - ./mysql1/mysql:/var/lib/mysql
+      - ./mysql1/db/custom.cnf:/etc/mysql/conf.d/custom.cnf
+    networks:
+      - sae
+
+networks:
+  sae:
+    driver: bridge
+
+
